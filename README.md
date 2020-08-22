@@ -1,1 +1,0 @@
-# Qt_PWM_serial_port_communication
