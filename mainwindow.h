@@ -10,7 +10,7 @@
 
 #include "windows.h"
 #include "dbt.h"
-
+#include "mythread.h"
 
 #include<qwt_plot.h>
 #include <qwt_plot_layout.h>
@@ -49,13 +49,23 @@ public:
 
     //------------------------>串口
 
-    bool openUSART();//打开串口函数
+    bool reverseUSART();//打开串口函数
 
     void receive();
 
     void usart_init();
 
     float float_rec(QByteArray buffer);
+
+    //------------------------>槽函数
+
+    void dealThread(QByteArray buffer);
+
+    void stopThread();
+
+    void tabchange();
+
+    void dealfloatThread(QPointF point);
 
 private slots:
 
@@ -76,6 +86,8 @@ private slots:
     void on_resetButton_clicked();
 
     void on_fixButton_clicked();
+
+    void on_threadButton_clicked();
 
 private:
 
@@ -120,6 +132,10 @@ private:
     QSerialPort serial;
     QSerialPortInfo info_serial;
 
+    QStringList comname;
+
+    Mythread *thread;
+
 protected:
 
     //绘图必须在绘图时间中实现
@@ -129,8 +145,6 @@ protected:
     void mousePressEvent(QMouseEvent *event);
 
     void mouseMoveEvent(QMouseEvent *event);
-
-    void mouseReleaseEvent(QMouseEvent *event);
 
     void wheelEvent(QWheelEvent *event);
 

@@ -1,23 +1,31 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "mythread.h"
 
 #include "usart.h"
 
 #include <QDebug>
 #include <QMessageBox>
 #include <QPointF>
+#include <QTextEdit>
 
 void MainWindow::usart_init()
 {
-
+    int i=0;
+    comname.clear();
     //搜索端口号
     foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
     {
         QString item;
         item=info.portName()+" "+info.description();
         ui->comBox->addItem(item);
+        comname<<info.portName();
+        qDebug()<<i<<comname.value(i)<<item;
+        i++;
     }
 
+    ui->ReceiveEdit->setFont(QFont(tr("Source Code Pro"),9));
+    ui->dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea);
     //timerID2=this->startTimer(1000);
 }
 
@@ -25,72 +33,30 @@ void MainWindow::usart_init()
 void MainWindow:: receive()
 {
     static QByteArray receive;
+
     //读取串口收到的数据
-
     QByteArray buffer = serial.readAll();
-    bool ok;
 
-    qDebug()<<buffer;//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
+ //   qDebug()<<buffer;//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     //判断是否需要16进制显示
-    if(ui->show16Box->isChecked()==true)
+    if(ui->tebWidget->currentIndex()==1)
     {
-        buffer = buffer.toHex() ;//转换为16进制 例："1234" -->“31323334”
-        ui->ReceiveEdit->insertPlainText((QString) buffer);
-        qDebug()<<buffer;
+       if(ui->show16Box->isChecked()==true)
+       {
+           buffer = buffer.toHex() ;//转换为16进制 例："1234" -->“31323334”
+           thread->setflag(REC_FLAG);
+           thread->setbuff(buffer);
+           thread->start();
+       }
+       ui->ReceiveEdit->insertPlainText((QString) buffer);
     }
-    else
+    else if(ui->tebWidget->currentIndex()==0)
     {
-        switch(buffer.left(1).toHex().toInt(&ok,16))
-        {
-            case REC_FLOAT:
-                float temp=float_rec(buffer);
-                float temp_time=ui->label->text().toDouble();
-
-                if(firstpoint_flag)
-                {
-                    firstpoint_flag=false;
-                    points.removeFirst();
-
-                    peak.setX(temp_time);
-                    peak.setY(temp);
-                    index_peak=points.size()-1;
-
-                    valley.setX(temp_time);
-                    valley.setY(temp);
-                    index_valley=points.size()-1;
-
-                    ymax=temp;
-                    ymin=temp;
-
-                }
-
-                points<<QPointF(temp_time,temp);
-
-                if(temp>peak.y())
-                {
-                    peak.setX(temp_time);
-                    peak.setY(temp);
-                    index_peak=points.size()-1;
-                    ymax=temp;
-                }
-                if(temp<valley.y())
-                {
-                    valley.setX(temp_time);
-                    valley.setY(temp);
-                    index_valley=points.size()-1;
-                    ymin=temp;
-                }
-
-                ui->peaklabel->setText(QString("( %1 , %2 )").arg(peak.x()).arg(peak.y()));
-                ui->valleylabel->setText(QString("( %1 , %2 )").arg(valley.x()).arg(valley.y()));
-
-                curve2->setSamples(points);
-                curve2->attach(ui->qwtPlot);
-                curve2->setLegendAttribute(curve2->LegendShowLine);
-                break;
-        }
+        thread->setflag(DRAW_FLOAT_FLAG);
+        thread->setbuff(buffer);
+        thread->settime(ui->label->text().toDouble());
+        thread->start();
     }
 }
 
@@ -107,12 +73,13 @@ float MainWindow::float_rec(QByteArray buffer)
     return data;
 }
 
-bool MainWindow::openUSART()
+bool MainWindow::reverseUSART()
 {
     if(ui->open_Button->text() == QString("打开串口"))
     {
         //设置串口端口号
-        serial.setPortName(ui->comBox->currentText());
+        serial.setPortName(comname.value(ui->comBox->currentIndex()));
+        qDebug()<<ui->comBox->currentIndex()<<comname.value(ui->comBox->currentIndex());
         //设置波特率
         serial.setBaudRate(ui->bandRateBox->currentText().toInt());
         //设置数据位
@@ -221,7 +188,7 @@ void MainWindow::on_send_Button_clicked()
 
 void MainWindow::on_open_Button_clicked()
 {
-    this->openUSART();
+    this->reverseUSART();
 }
 
 

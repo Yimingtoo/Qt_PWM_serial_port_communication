@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-
 #include <QPainter>
 #include <QLineF>
 #include <QPointF>
@@ -20,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->draw_init();
     this->usart_init();
+    thread=new Mythread(this);
 
     ui->bandRateBox->setEditable(true);
     connect(&serial,&QSerialPort::readyRead ,this,&MainWindow:: receive);
@@ -31,13 +31,127 @@ MainWindow::MainWindow(QWidget *parent)
     {
        ui->dockWidget->show();
     });
-    //points<<QPointF(1,10000000000);
+
+    connect(thread,&Mythread::hex_isDone,this,&MainWindow::dealThread);
+
+    connect(this,&MainWindow::destroyed,this,&MainWindow::stopThread);
+
+    connect(ui->tebWidget,&QTabWidget::currentChanged,this,&MainWindow::tabchange);
+
+    connect(thread,&Mythread::float_isDone,this,&MainWindow::dealfloatThread);
 
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::tabchange()
+{
+    if(ui->open_Button->text() == QString("关闭串口"))
+        this->reverseUSART();  //关闭串口
+
+}
+
+void MainWindow::dealThread(QByteArray buffer)
+{
+    qDebug()<<buffer<<"\nit is over";
+
+    if(ui->tebWidget->currentIndex()==1)
+    {
+
+        ui->ReceiveEdit->insertPlainText((QString) buffer);
+
+        //qDebug()<<buffer;
+    }
+
+
+}
+
+void MainWindow::dealfloatThread(QPointF point)
+{
+//    qDebug()<<minI<<maxI;
+    if(ui->tebWidget->currentIndex()==0)
+    {
+//        if(firstpoint_flag && minI!=-1 && maxI!=-1)
+//        {
+//            firstpoint_flag=false;
+//            points.removeFirst();
+
+//            peak.setX(transpoints.value(maxI).x());
+//            peak.setY(transpoints.value(maxI).y());
+//            peak=transpoints.value(maxI);
+//            index_peak=maxI;
+
+//            valley.setX(transpoints.value(minI).x());
+//            valley.setY(transpoints.value(minI).y());
+//            valley=transpoints.value(minI);
+//            index_valley=minI;
+
+//            ymax=peak.y();
+//            ymin=valley.y();
+//        }
+
+
+//        if(transpoints.value(maxI).y()>peak.y() && minI!=-1 && maxI!=-1)
+//        {
+//            peak.setX(transpoints.value(maxI).x());
+//            peak.setY(transpoints.value(maxI).y());
+//            index_peak=points.size()+maxI;
+//            ymax=peak.y();
+//        }
+//        if(transpoints.value(minI).y()<valley.y() && minI!=-1 && maxI!=-1)
+//        {
+//            valley.setX(transpoints.value(minI).x());
+//            valley.setY(transpoints.value(minI).y());
+//            index_valley=points.size()+minI;
+//            ymin=valley.y();
+//        }
+
+        if(firstpoint_flag)
+        {
+            firstpoint_flag=false;
+            points.removeFirst();
+            peak.setX(point.x());
+            peak.setY(point.y());
+
+            index_peak=0;
+
+            valley.setX(point.x());
+            valley.setY(point.y());
+            valley=point;
+            index_valley=0;
+        }
+        points<<point;
+        if(point.y()>peak.y())
+        {
+            peak.setY(point.y());
+            index_peak=points.size()-1;
+        }
+        if(point.y()<valley.y())
+        {
+            valley.setY(point.y());
+            index_valley=points.size()-1;
+        }
+
+        ui->peaklabel->setText(QString("( %1 , %2 )").arg(peak.x()).arg(peak.y()));
+        ui->valleylabel->setText(QString("( %1 , %2 )").arg(valley.x()).arg(valley.y()));
+
+        curve2->setSamples(points);
+        curve2->attach(ui->qwtPlot);
+        curve2->setLegendAttribute(curve2->LegendShowLine);
+
+    }
+}
+
+void MainWindow::stopThread()
+{
+    //停止线程，不要用terminate();
+    thread->quit();
+    //等待线程关闭
+    thread->wait();
+    qDebug()<<"stop";
 }
 
 //以下部分主要使用mfc，具体请参考msdn
@@ -61,28 +175,38 @@ bool MainWindow:: nativeEvent(const QByteArray &eventType, void *message, long *
             case DBT_DEVICEARRIVAL: //当有usb插入时
             if (lpdb -> dbch_devicetype == DBT_DEVTYP_PORT) //筛选是否为串口 msdn
             {
+                int i=0;
+                comname.clear();
                 ui->comBox->clear();
                 foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
                 {
                     QString item;
                     item=info.portName()+" "+info.description();
                     ui->comBox->addItem(item);
+                    comname<<info.portName();
+                    //qDebug()<<i<<comname.value(i)<<item;
+                    i++;
                 }
             }
-            qDebug() << "DBT_DEVICEARRIVAL" ;
+            qDebug() << "usb插入" ;
             break;
         case DBT_DEVICEREMOVECOMPLETE:  //当有usb拔出时
             if (lpdb -> dbch_devicetype == DBT_DEVTYP_PORT) //筛选是否为串口
             {
+                int i=0;
+                comname.clear();
                 ui->comBox->clear();
                 foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
                 {
                     QString item;
                     item=info.portName()+" "+info.description();
                     ui->comBox->addItem(item);
+                    comname<<info.portName();
+                    //qDebug()<<i<<comname.value(i)<<item;
+                    i++;
                 }
             }
-            qDebug() << "DBT_DEVICEREMOVECOMPLETE" ;
+            qDebug() << "usb拔出" ;
             break;
         }
     }
@@ -196,7 +320,6 @@ void MainWindow::paintEvent(QPaintEvent *)
             xmin+=0.04;
             ui->qwtPlot->setAxisScale(QwtPlot::xBottom,xmin,xmax,accuracyx);
         }
-        //qDebug()<<(rect.width())<<(ui->qwtPlot->geometry().width());
 
         if(((rect.width()/10)!=(ui->qwtPlot->geometry().width())/10))
         {
@@ -252,7 +375,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     QPointF point = event->pos();//窗口内位置
     qDebug()<<"("<<point.x()<<","<<point.y()<<")";
-    if(ui->qwtPlot->geometry().contains(this->mapFromGlobal(QCursor::pos())))
+    if(ui->qwtPlot->geometry().contains(ui->qwtPlot->mapFrom(this,this->mapFromGlobal(QCursor::pos()))))//注意这里的坐标转换
     {
         globalpoint=point;
     }
@@ -260,30 +383,23 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 void MainWindow:: mouseMoveEvent(QMouseEvent *event)
 {
-    if(ui->qwtPlot->geometry().contains(this->mapFromGlobal(QCursor::pos())))
+    //qDebug()<<this->mapFromGlobal(QCursor::pos()).x()<<this->mapFromGlobal(QCursor::pos()).y();//转换后成为局部坐标
+    if(ui->qwtPlot->geometry().contains(ui->qwtPlot->mapFrom(this,this->mapFromGlobal(QCursor::pos()))))
     {
         drag_flag=true;
 
         QPointF point = event->pos();//窗口内位置
 
         qreal dx=0;
-        if(ui->qwtPlot->geometry().contains(this->mapFromGlobal(QCursor::pos())))
-        {
-            dx=point.x()-globalpoint.x();
 
-            double move=dx/(qwtw/spanx);
-            xmin=xmin-move;
-            xmax=xmax-move;
-            ui->qwtPlot->setAxisScale(QwtPlot::xBottom,xmin,xmax,accuracyx);
-        }
+        dx=point.x()-globalpoint.x();
+
+        double move=dx/(qwtw/spanx);
+        xmin=xmin-move;
+        xmax=xmax-move;
+        ui->qwtPlot->setAxisScale(QwtPlot::xBottom,xmin,xmax,accuracyx);
         globalpoint=point;
     }
-}
-
-void MainWindow:: mouseReleaseEvent(QMouseEvent *event)
-{
-
-
 }
 
 void MainWindow:: wheelEvent(QWheelEvent *event)
@@ -326,10 +442,10 @@ void MainWindow::on_pushButton_2_clicked()
 
 }
 
-
 void MainWindow::on_startButton_clicked()
 {
-    if(this->openUSART())
+//    thread->reset_leftbuff();
+    if(this->reverseUSART())
     {
         if(timerIsRun==false)
         {
@@ -356,27 +472,8 @@ void MainWindow::on_startButton_clicked()
 
 void MainWindow:: timerEvent(QTimerEvent *e)
 {
-    if(e->timerId()==timerID)
-    {
-        timecount++;
-        ui->label->setText(QString::number(timecount/100.0,'f',2));
-        //qDebug()<<"timer"<<timecount;
-    }
-    else if(e->timerId()==timerID2)
-    {
-        ui->comBox->clear();
-        foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
-        {
-            QString item;
-            item=info.portName()+" "+info.description();
-            ui->comBox->addItem(item);
-        }
-        //qDebug()<<"timer";
-    }
-//    points<<QPointF(timecount/100.0,-timecount/100.0);
-//    curve2->setSamples(points);
-//    curve2->attach(ui->qwtPlot);
-//    curve2->setLegendAttribute(curve2->LegendShowLine);
+    timecount++;
+    ui->label->setText(QString::number(timecount/100.0,'f',2));
 }
 
 void MainWindow::on_resetButton_clicked()
@@ -443,6 +540,11 @@ void MainWindow::on_fixButton_clicked()
     }
 }
 
+
+void MainWindow::on_threadButton_clicked()
+{
+    thread->start();
+}
 
 
 

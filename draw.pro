@@ -20,10 +20,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    mythread.cpp \
     usart.cpp
 
 HEADERS += \
     mainwindow.h \
+    mythread.h \
     usart.h
 
 FORMS += \
