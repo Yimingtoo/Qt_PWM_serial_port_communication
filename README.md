@@ -1,4 +1,4 @@
-Update from: v1.1
+Update from: v1.1  
 Current version: v1.2  
 Qt version: 5.14.2    
 
