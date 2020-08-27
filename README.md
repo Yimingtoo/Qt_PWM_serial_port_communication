@@ -1,6 +1,7 @@
 Update from: v1.1
 Current version: v1.2  
-Qt version: 5.14.2    
+Qt version: 5.14.2  
+Qwt version: 6.1.4
 
 程序：串口波形显示器（调试上位机）  
 
@@ -35,6 +36,9 @@ Qt version: 5.14.2
 
 注意：
 >单片机采集数据的周期（即计算机接收每组数据的周期）要大于30ms
+
+>资源在https://github.com/chenyongzhi5032/Qt_PWM_serial_port_communication/tree/update3
+>如有任何问题和建议，欢迎讨论，email:1240831428@qq.com
 
 
   
