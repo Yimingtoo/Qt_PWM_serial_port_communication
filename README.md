@@ -1,6 +1,6 @@
 Data:2020/08/24  
-Update from: v1.1  
-Current version: v1.2  
+Update from: v1.2  
+Current version: v1.3  
 Qt version: 5.14.2  
 Qwt version: 6.1.4
 
