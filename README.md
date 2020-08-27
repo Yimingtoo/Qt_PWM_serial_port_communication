@@ -41,7 +41,7 @@ Qwt version: 6.1.4
 >单片机采集数据的周期（即计算机接收每组数据的周期）要大于30ms  
 
 >资源在https://github.com/chenyongzhi5032/Qt_PWM_serial_port_communication/tree/update3  
->如有任何问题和建议，欢迎讨论，email:1240831428@qq.com
+>如有任何问题和建议，欢迎讨论，Email:1240831428@qq.com
 
 
   
