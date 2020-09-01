@@ -1,6 +1,7 @@
 QT       += core gui
 
 QT       += serialport
+QT       += 3drender
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,18 +19,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    bandrate.cpp \
+    draw.cpp \
     main.cpp \
     mainwindow.cpp \
     mythread.cpp \
+    setting.cpp \
+    steer_gear_ctrl.cpp \
     usart.cpp
 
 HEADERS += \
     mainwindow.h \
     mythread.h \
+    setting.h \
     usart.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    setting.ui
+
+RC_ICONS = bug.ico
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

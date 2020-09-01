@@ -3,7 +3,7 @@
 
 Mythread::Mythread(QObject *parent) : QThread(parent)
 {
-//    leftbuff="";
+
 }
 
 void Mythread::run()
@@ -25,15 +25,10 @@ void Mythread::run()
     {
         bool ok;
         char* buffer;
-//        int count=0;
         float data;
         QByteArray receive;
-//        QPolygonF temppoints;
         QPointF temppoint;
-//        float tempmax,tempmin;
-//        int maxindex=-1,minindex=-1;
-//        buff=leftbuff+buff;
-        //qDebug()<<buff;
+
         while(buff.length()>=6)
         {
             switch(buff.left(1).toHex().toInt(&ok,16))
@@ -42,49 +37,18 @@ void Mythread::run()
                 receive=buff.left(5).right(4);
                 buffer=receive.data();
                 data=*((float*)buffer);
-
-                //qDebug()<<data;//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-                //qDebug()<<count;
-//                if(count==0)
-//                {
-//                    tempmax=data;
-//                    tempmin=data;
-//                    maxindex=0;
-//                    minindex=0;
-//                }
-//                if(data>tempmax)
-//                {
-//                    tempmax=data;
-//                    maxindex=count;
-//                }
-//                if(data<tempmin)
-//                {
-//                    tempmin=data;
-//                    minindex=count;
-//                }
-
-                //获取时间
-//                temppoints<<QPointF(currentTime,data);
-
                 temppoint=QPointF(currentTime,data);
                 buff=buff.remove(0,6);
-//                count++;
                 break;
+
             default:
                 buff=buff.remove(0,1);
                 break;
             }
         }
-//        if(buff.left(1).toHex().toInt(&ok,16)==REC_FLOAT)
-//            leftbuff=buff;
-//        qDebug()<<minindex<<maxindex;
-
         emit float_isDone(temppoint);
         Tflag=FLAG_CLEAR;   //清除标志位
     }
-
-    //qDebug()<<"over";
 }
 
 void Mythread::setbuff(QByteArray buffer)
@@ -112,7 +76,4 @@ void Mythread::settime(float time)
     currentTime=time;
 }
 
-//void Mythread::reset_leftbuff()
-//{
-//    leftbuff="";
-//}
+

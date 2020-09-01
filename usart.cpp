@@ -1,18 +1,16 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "mythread.h"
 
+#include "mythread.h"
 #include "usart.h"
 
-#include <QDebug>
-#include <QMessageBox>
-#include <QPointF>
-#include <QTextEdit>
+//------------------------------------------------------------------------------------------------>自定义函数
 
 void MainWindow::usart_init()
 {
     int i=0;
     comname.clear();
+
     //搜索端口号
     foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
     {
@@ -24,53 +22,11 @@ void MainWindow::usart_init()
         i++;
     }
 
-    ui->ReceiveEdit->setFont(QFont(tr("Source Code Pro"),9));
+    ui->ReceiveEdit->setFont(QFont(tr("Consolas"),10));
+    ui->ReceiveEdit->setReadOnly(true);
+    ui->SendEdit->setFont(QFont(tr("Consolas"),10));
+
     ui->dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea);
-    //timerID2=this->startTimer(1000);
-}
-
-
-void MainWindow:: receive()
-{
-    static QByteArray receive;
-
-    //读取串口收到的数据
-    QByteArray buffer = serial.readAll();
-
- //   qDebug()<<buffer;//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-    //判断是否需要16进制显示
-    if(ui->tebWidget->currentIndex()==1)
-    {
-       if(ui->show16Box->isChecked()==true)
-       {
-           buffer = buffer.toHex() ;//转换为16进制 例："1234" -->“31323334”
-           thread->setflag(REC_FLAG);
-           thread->setbuff(buffer);
-           thread->start();
-       }
-       ui->ReceiveEdit->insertPlainText((QString) buffer);
-    }
-    else if(ui->tebWidget->currentIndex()==0)
-    {
-        thread->setflag(DRAW_FLOAT_FLAG);
-        thread->setbuff(buffer);
-        thread->settime(ui->label->text().toDouble());
-        thread->start();
-    }
-}
-
-float MainWindow::float_rec(QByteArray buffer)
-{
-    QByteArray receive=buffer.left(5).right(4);
-    char* buff=receive.data();
-    float data=*((float*)buff);
-
-
-    qDebug()<<data;//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
-    return data;
 }
 
 bool MainWindow::reverseUSART()
@@ -79,7 +35,11 @@ bool MainWindow::reverseUSART()
     {
         //设置串口端口号
         serial.setPortName(comname.value(ui->comBox->currentIndex()));
-        qDebug()<<ui->comBox->currentIndex()<<comname.value(ui->comBox->currentIndex());
+
+
+        qDebug()<<ui->comBox->currentIndex()<<comname.value(ui->comBox->currentIndex())<<"被打开";//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
         //设置波特率
         serial.setBaudRate(ui->bandRateBox->currentText().toInt());
         //设置数据位
@@ -138,10 +98,55 @@ bool MainWindow::reverseUSART()
     return true;
 }
 
-void MainWindow::on_sendPIDButton_clicked()
+void MainWindow:: receive()
 {
+    static QByteArray receive;
+
+    //读取串口收到的数据
+    QByteArray buffer = serial.readAll();
+
+    //判断是否需要16进制显示
+    if(ui->tebWidget->currentIndex()==1)
+    {
+       if(ui->show16Box->isChecked()==true)
+       {
+           buffer = buffer.toHex() ;//转换为16进制 例："1234" -->“31323334”
+           thread->setflag(REC_FLAG);
+           thread->setbuff(buffer);
+           thread->start();
+       }
+       else
+           ui->ReceiveEdit->insertPlainText((QString) buffer);
+    }
+    else if(ui->tebWidget->currentIndex()==0)
+    {
+        thread->setflag(DRAW_FLOAT_FLAG);
+        thread->setbuff(buffer);
+        thread->settime(ui->label->text().toDouble());
+        thread->start();
+    }
+}
+
+float MainWindow::float_rec(QByteArray buffer)
+{
+    QByteArray receive=buffer.left(5).right(4);
+    char* buff=receive.data();
+    float data=*((float*)buff);
 
 
+    qDebug()<<data;//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+    return data;
+}
+
+
+
+//------------------------------------------------------------------------------------------------>私有槽函数
+
+void MainWindow::on_clear_r_Button_clicked()
+{
+    ui->ReceiveEdit->clear();
 }
 
 void MainWindow::on_send_Button_clicked()
@@ -185,14 +190,82 @@ void MainWindow::on_send_Button_clicked()
     serial.write(senddata);
 }
 
-
 void MainWindow::on_open_Button_clicked()
 {
     this->reverseUSART();
 }
 
 
-void MainWindow::on_clear_r_Button_clicked()
+//------------------------------------------------------------------------------------------------>Event事件
+
+//以下部分主要使用mfc，具体请参考msdn
+//热插拔事件
+bool MainWindow:: nativeEvent(const QByteArray &eventType, void *message, long *result)
 {
-    ui->ReceiveEdit->clear();
+    Q_UNUSED(eventType);
+    MSG* msg = reinterpret_cast<MSG*>(message);
+    int msgType = msg->message;
+    if(msgType == WM_DEVICECHANGE)
+    {
+        //qDebug() << "Recv Event " ;
+        PDEV_BROADCAST_HDR lpdb = (PDEV_BROADCAST_HDR)msg->lParam;
+        switch(msg->wParam)
+        {
+            case DBT_DEVICETYPESPECIFIC:
+            {
+                qDebug() << "DBT_DEVICETYPESPECIFIC " ;
+                break;
+            }
+            case DBT_DEVICEARRIVAL: //当有usb插入时
+            if (lpdb -> dbch_devicetype == DBT_DEVTYP_PORT) //筛选是否为串口 msdn
+            {
+                int i=0;
+                comname.clear();
+                ui->comBox->clear();
+                foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
+                {
+                    QString item;
+                    item=info.portName()+" "+info.description();
+                    ui->comBox->addItem(item);
+                    comname<<info.portName();
+                    i++;
+                }
+            }
+            qDebug() << "usb插入" ;
+            break;
+        case DBT_DEVICEREMOVECOMPLETE:  //当有usb拔出时
+            QString current_com=ui->comBox->currentText();
+            if (lpdb -> dbch_devicetype == DBT_DEVTYP_PORT) //筛选是否为串口
+            {
+                int i=0;
+                comname.clear();
+                ui->comBox->clear();
+                foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
+                {
+                    QString item;
+                    item=info.portName()+" "+info.description();
+                    ui->comBox->addItem(item);
+                    comname<<info.portName();
+                    //qDebug()<<i<<comname.value(i)<<item;
+                    i++;
+                }
+                if(-1==ui->comBox->findText(current_com))
+                {
+                    if(ui->open_Button->text() == QString("关闭串口"))
+                    {
+                        reverseUSART();
+                    }
+                }
+            }
+            qDebug() << "usb拔出" ;
+            break;
+        }
+    }
+    return false;
 }
+
+void MainWindow::on_ReceiveEdit_textChanged()
+{
+    ui->ReceiveEdit->moveCursor(QTextCursor::End);
+}
+

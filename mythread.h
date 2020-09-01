@@ -30,8 +30,6 @@ private:
 
     QByteArray buff;
 
-    //QByteArray leftbuff;
-
     int Tflag;
 
     float currentTime;
@@ -43,8 +41,6 @@ public:
     void setflag(int flag);
 
     void settime(float time);
-
-//    void reset_leftbuff();
 
 };
 
