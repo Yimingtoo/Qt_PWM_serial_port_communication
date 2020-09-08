@@ -1,8 +1,8 @@
-Data:2020/9/8
-Update from: v1.3
-Current version: v1.3.5
-Qt version: 5.14.2
-Qwt version: 6.1.4
+Data:2020/9/8  
+Update from: v1.3  
+Current version: v1.3.5  
+Qt version: 5.14.2  
+Qwt version: 6.1.4  
 
 程序：SComAssistant（调试上位机）
 
