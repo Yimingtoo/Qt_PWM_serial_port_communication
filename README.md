@@ -76,8 +76,8 @@ Qwt version: 6.1.4
 注意：  
 >单片机采集数据的周期（即计算机接收每组数据的周期）要大于30ms  
 
-资源在https://github.com/chenyongzhi5032/Qt_PWM_serial_port_communication/tree/update4  
+上位机程序源码在https://github.com/chenyongzhi5032/Qt_PWM_serial_port_communication/tree/update5  
 
 Email:1240831428@qq.com  
 
-舵机调试上位机的编写参考了学长的调试上位机  
+舵机调试上位机的编写参考了学长的调试上位机，有任何问题感谢指出  
