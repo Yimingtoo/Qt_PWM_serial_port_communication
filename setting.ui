@@ -63,7 +63,7 @@
       </font>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="movable">
       <bool>false</bool>
@@ -119,308 +119,6 @@
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_52">
-           <item>
-            <widget class="QLabel" name="label_70">
-             <property name="font">
-              <font>
-               <family>微软雅黑</family>
-              </font>
-             </property>
-             <property name="text">
-              <string>Group1</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comboBox_1">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="font">
-              <font>
-               <family>微软雅黑</family>
-              </font>
-             </property>
-             <item>
-              <property name="text">
-               <string>PA0</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA7</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB0</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB7</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD0</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD7</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="0" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_56">
-           <item>
-            <widget class="QLabel" name="label_74">
-             <property name="font">
-              <font>
-               <family>微软雅黑</family>
-              </font>
-             </property>
-             <property name="text">
-              <string>Group5</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comboBox_5">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="font">
-              <font>
-               <family>微软雅黑</family>
-              </font>
-             </property>
-             <item>
-              <property name="text">
-               <string>PA0</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA7</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB0</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB7</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD0</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD7</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-          </layout>
-         </item>
          <item row="1" column="0">
           <layout class="QHBoxLayout" name="horizontalLayout_53">
            <item>
@@ -437,157 +135,6 @@
            </item>
            <item>
             <widget class="QComboBox" name="comboBox_2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="font">
-              <font>
-               <family>微软雅黑</family>
-              </font>
-             </property>
-             <item>
-              <property name="text">
-               <string>PA0</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA7</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB0</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB7</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD0</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD7</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_57">
-           <item>
-            <widget class="QLabel" name="label_75">
-             <property name="font">
-              <font>
-               <family>微软雅黑</family>
-              </font>
-             </property>
-             <property name="text">
-              <string>Group6</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comboBox_6">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -874,157 +421,6 @@
            </item>
           </layout>
          </item>
-         <item row="2" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_58">
-           <item>
-            <widget class="QLabel" name="label_76">
-             <property name="font">
-              <font>
-               <family>微软雅黑</family>
-              </font>
-             </property>
-             <property name="text">
-              <string>Group7</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comboBox_7">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="font">
-              <font>
-               <family>微软雅黑</family>
-              </font>
-             </property>
-             <item>
-              <property name="text">
-               <string>PA0</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PA7</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB0</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PB7</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD0</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>PD7</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-          </layout>
-         </item>
          <item row="3" column="0">
           <layout class="QHBoxLayout" name="horizontalLayout_55">
            <item>
@@ -1176,7 +572,611 @@
            </item>
           </layout>
          </item>
-         <item row="3" column="1">
+         <item row="0" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_52">
+           <item>
+            <widget class="QLabel" name="label_70">
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+              </font>
+             </property>
+             <property name="text">
+              <string>Group1</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox_1">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+              </font>
+             </property>
+             <item>
+              <property name="text">
+               <string>PA0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD7</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="4" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_56">
+           <item>
+            <widget class="QLabel" name="label_74">
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+              </font>
+             </property>
+             <property name="text">
+              <string>Group5</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox_5">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+              </font>
+             </property>
+             <item>
+              <property name="text">
+               <string>PA0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD7</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="0" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_57">
+           <item>
+            <widget class="QLabel" name="label_75">
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+              </font>
+             </property>
+             <property name="text">
+              <string>Group6</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox_6">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+              </font>
+             </property>
+             <item>
+              <property name="text">
+               <string>PA0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD7</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_58">
+           <item>
+            <widget class="QLabel" name="label_76">
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+              </font>
+             </property>
+             <property name="text">
+              <string>Group7</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox_7">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+              </font>
+             </property>
+             <item>
+              <property name="text">
+               <string>PA0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD7</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_59">
            <item>
             <widget class="QLabel" name="label_77">
@@ -1192,6 +1192,308 @@
            </item>
            <item>
             <widget class="QComboBox" name="comboBox_8">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+              </font>
+             </property>
+             <item>
+              <property name="text">
+               <string>PA0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD7</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_60">
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+              </font>
+             </property>
+             <property name="text">
+              <string>Group9</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox_9">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+              </font>
+             </property>
+             <item>
+              <property name="text">
+               <string>PA0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PA7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PB7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PD7</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="4" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_61">
+           <item>
+            <widget class="QLabel" name="label_79">
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+              </font>
+             </property>
+             <property name="text">
+              <string>Group10</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox_10">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>

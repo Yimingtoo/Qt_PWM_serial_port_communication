@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     //-----------------------------------------信号与槽-----------------------------------------//
 
+    connect(&serial,&QSerialPort::readyRead ,this,&MainWindow:: receive);
+
     connect(ui->usartSettingsAction,&QAction::triggered,this,[=]()
     {
        ui->dockWidget->show();
@@ -44,13 +46,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(setting,&Setting::PID_open,this,&MainWindow::PID_open_rec);
 
+    connect(ui->saveas_action,&QAction::triggered,this,&MainWindow::saveas_action_res);
+
     //-----------------------------------------结尾处理-----------------------------------------//
 
     setting->getSettingStatus();
+    this->tabchange();
+
 }
 
 MainWindow::~MainWindow()
 {
+    bandrate_destruct();
     delete ui;
 }
 
@@ -78,9 +85,6 @@ void MainWindow::MainWindow_init()
     this->setWindowTitle("调试助手");
 
     this->setWindowIcon(QIcon("./bug.ico"));
-
-    this->tabchange();
-
 
 }
 
@@ -127,6 +131,7 @@ void MainWindow::PID_open_rec(bool isok)
     {
         isPIDopen_flag=true;
         PID_setvisible(true);
+        this->tabchange();
 
     }
     else
@@ -144,16 +149,17 @@ void MainWindow::PID_open_rec(bool isok)
 
 void MainWindow::tabchange()
 {
+
     if(ui->open_Button->text() == QString("关闭串口"))
         this->reverseUSART();  //关闭串口
 
     if(ui->tebWidget->currentIndex()==2)
     {
-        ui->codeEdit->setVisible(true);
+        ui->codetableWidget->setVisible(true);
     }
     else
     {
-        ui->codeEdit->setVisible(false);
+        ui->codetableWidget->setVisible(false);
     }
 
     if(ui->tebWidget->currentIndex()==0)
@@ -183,7 +189,7 @@ void MainWindow::dealThread(QByteArray buffer)
 {
     qDebug()<<buffer;
 
-    if(ui->tebWidget->currentIndex()==1)
+    if(ui->tebWidget->currentIndex()==1 || ui->tebWidget->currentIndex()==2)
     {
         ui->ReceiveEdit->insertPlainText((QString) buffer);
     }
@@ -318,8 +324,21 @@ void MainWindow:: wheelEvent(QWheelEvent *event)
         group_wheel(6,ui->group6,event);
         group_wheel(7,ui->group7,event);
         group_wheel(8,ui->group8,event);
+        group_wheel(9,ui->group9,event);
+        group_wheel(10,ui->group10,event);
 
     }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+//    if(event->text()=="\r")
+//    {
+//        if(ui->tebWidget->currentIndex()==1)
+//        {
+//            this->on_send_Button_clicked();
+//        }
+//    }
 }
 
 void MainWindow:: timerEvent(QTimerEvent *e)
@@ -349,6 +368,17 @@ void MainWindow:: timerEvent(QTimerEvent *e)
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

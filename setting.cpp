@@ -32,7 +32,7 @@ Setting::~Setting()
 void Setting::Setting_init()
 {
 
-    int index[8];
+    int index[10];
 
     QFile file("PinSetting.dat");
     bool res=file.open(QIODevice::ReadWrite);
@@ -59,6 +59,10 @@ void Setting::Setting_init()
     pin_str=pin_str.remove(0,4);
     index[7] = ui->comboBox_8->findText(pin_str.left(3));
     pin_str=pin_str.remove(0,4);
+    index[8] = ui->comboBox_9->findText(pin_str.left(3));
+    pin_str=pin_str.remove(0,4);
+    index[9] = ui->comboBox_10->findText(pin_str.left(3));
+    pin_str=pin_str.remove(0,4);
 
     ui->comboBox_1->setCurrentIndex(index[0]);
     ui->comboBox_2->setCurrentIndex(index[1]);
@@ -68,6 +72,8 @@ void Setting::Setting_init()
     ui->comboBox_6->setCurrentIndex(index[5]);
     ui->comboBox_7->setCurrentIndex(index[6]);
     ui->comboBox_8->setCurrentIndex(index[7]);
+    ui->comboBox_9->setCurrentIndex(index[8]);
+    ui->comboBox_10->setCurrentIndex(index[9]);
 
     file.close();
 
@@ -175,8 +181,8 @@ void Setting::on_okButton_clicked()
     }
 
     {
-        int index[8];
-        QString title[8];
+        int index[10];
+        QString title[10];
         index[0]=ui->comboBox_1->currentIndex();
         index[1]=ui->comboBox_2->currentIndex();
         index[2]=ui->comboBox_3->currentIndex();
@@ -185,9 +191,11 @@ void Setting::on_okButton_clicked()
         index[5]=ui->comboBox_6->currentIndex();
         index[6]=ui->comboBox_7->currentIndex();
         index[7]=ui->comboBox_8->currentIndex();
-        for(int i=0;i<8;i++)
+        index[8]=ui->comboBox_9->currentIndex();
+        index[9]=ui->comboBox_10->currentIndex();
+        for(int i=0;i<10;i++)
         {
-            for(int j=i+1;j<8;j++)
+            for(int j=i+1;j<10;j++)
             {
                 if(index[i]==index[j])
                 {
@@ -203,7 +211,7 @@ void Setting::on_okButton_clicked()
             qDebug()<<"打开IARpath.txt失败\n";
             return;
         }
-        for(int i=0;i<8;i++)
+        for(int i=0;i<10;i++)
         {
             title[i]=ui->comboBox_1->itemText(index[i]);
             filesaves.write(title[i].toUtf8()+"\n");

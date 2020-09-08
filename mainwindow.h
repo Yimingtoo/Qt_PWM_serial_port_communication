@@ -19,6 +19,7 @@
 #include <QObjectPicker>
 #include <QGroupBox>
 #include <QDialog>
+#include <QFileDialog>
 
 //Windows 相关头文件
 #include "windows.h"
@@ -95,6 +96,8 @@ public://-----------------------------------------------------------------------
 
     void bandrate_delete(int index);
 
+    void bandrate_destruct();
+
     //------------------------------------------------->舵机控制
 
     void receive();
@@ -117,7 +120,9 @@ public://-----------------------------------------------------------------------
 
     void buttonpressed_deal(int index,int dir);
 
-    void usart_send(int i);
+    void usart_send(int i,char cmd);
+
+    unsigned char find_pinID(QString pin);
 
     //------------------------------------------------->槽函数
 
@@ -140,6 +145,8 @@ public://-----------------------------------------------------------------------
     void bandrateindex_ischanged(int index);
 
     void bandrate_ishighlighted(int index);
+
+    void saveas_action_res();
 
 private slots://------------------------------------------------------------------------->私有槽函数
 
@@ -223,7 +230,30 @@ private slots://----------------------------------------------------------------
     void on_reverseButton8_clicked();
     void on_reverseButton8_pressed();
 
+    void on_forwardButton9_clicked();
+    void on_forwardButton9_pressed();
+
+    void on_reverseButton9_clicked();
+    void on_reverseButton9_pressed();
+
+    void on_forwardButton10_clicked();
+    void on_forwardButton10_pressed();
+
+    void on_reverseButton10_clicked();
+    void on_reverseButton10_pressed();
+
     void on_setgoalButton_clicked();
+
+    void on_SendEdit_textChanged();
+
+
+    void on_generateButton_clicked();
+
+    void on_codetableWidget_cellDoubleClicked(int row, int column);
+
+    void on_clearButton_clicked();
+
+    void on_downloadButton_clicked();
 
 private://------------------------------------------------------------------------->私有成员
 
@@ -294,9 +324,17 @@ private://----------------------------------------------------------------------
 
     int delay;
 
-    QLabel *dutylabel[8];
-    QLabel *varlabel[8];
-    QGroupBox *group[8];
+    QLabel *dutylabel[10];
+    QLabel *varlabel[10];
+    QGroupBox *group[10];
+
+    QStringList pinlist;
+    QStringList varlist;
+    QStringList aimlist;
+
+    int code_count;
+    bool stop_flag;
+    bool restart_flag;
 
     //------------------------------------------------->设置flag
 
@@ -329,6 +367,9 @@ protected://--------------------------------------------------------------------
     void mouseReleaseEvent(QMouseEvent *event);
 
     void wheelEvent(QWheelEvent *event);
+
+    //键盘事件
+    void keyPressEvent(QKeyEvent *event);
 
     //定时器事件
     void timerEvent(QTimerEvent *e);

@@ -13,8 +13,10 @@ void MainWindow::bandrate_init()
         return;
     }
     QString bandrates = file.readAll();
+    file.close();
+
     QString temp;
-    while(bandrates!="#")
+    while(bandrates.left(1)!="#")
     {
         temp="";
         while(bandrates.left(1)!="\n")
@@ -26,8 +28,21 @@ void MainWindow::bandrate_init()
         ui->bandRateBox->addItem(temp);
         bandrates.remove(0,1);
     }
-    file.close();
+    temp="";
+    bandrates.remove(0,1);
+    while(bandrates.left(1)!="#")
+    {
+        temp=temp+bandrates.left(1);
+        bandrates.remove(0,1);
+    }
+
+    bool ok;
+    int bandrateIndex=temp.toInt(&ok);
+
+    qDebug()<<bandrateIndex;
+
     ui->bandRateBox->addItem("添加");
+    ui->bandRateBox->setCurrentIndex(bandrateIndex);
 }
 
 void MainWindow::bandrate_delete(int index)
@@ -139,4 +154,33 @@ void MainWindow::bandrateindex_ischanged(int index)
     {
         bandrate_delete(index);
     }
+}
+
+//------------------------------------------------------------------------------------------------>系统槽函数
+
+void MainWindow::bandrate_destruct()
+{
+    QFile file("bandrate.dat");
+    bool res=file.open(QIODevice::ReadOnly);
+    if(res==false)
+    {
+        return;
+    }
+
+    QString str = file.readAll();
+    QString temp;
+    while(str.left(1)!="#")
+    {
+        temp=temp+str.left(1);
+        str=str.remove(0,1);
+    }
+    file.close();
+
+    res=file.open(QIODevice::WriteOnly);
+    if(res==false)
+    {
+        return;
+    }
+    file.write(temp.toUtf8()+"#"+QByteArray::number(ui->bandRateBox->currentIndex())+"#");
+    file.close();
 }

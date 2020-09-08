@@ -100,10 +100,18 @@ bool MainWindow::reverseUSART()
 
 void MainWindow:: receive()
 {
+
     static QByteArray receive;
 
     //读取串口收到的数据
     QByteArray buffer = serial.readAll();
+    qDebug()<<"buffer ="<<buffer;
+    char* byte=buffer.right(1).data();
+    if(byte[0]==0x60 && restart_flag==0)
+    {
+        this->on_downloadButton_clicked();
+        return;
+    }
 
     //判断是否需要16进制显示
     if(ui->tebWidget->currentIndex()==1)
@@ -151,6 +159,7 @@ void MainWindow::on_clear_r_Button_clicked()
 
 void MainWindow::on_send_Button_clicked()
 {
+
     if(serial.isOpen() == false)
     {
         QMessageBox::warning(NULL,"Warning","请打开串口！");
@@ -267,5 +276,21 @@ bool MainWindow:: nativeEvent(const QByteArray &eventType, void *message, long *
 void MainWindow::on_ReceiveEdit_textChanged()
 {
     ui->ReceiveEdit->moveCursor(QTextCursor::End);
+
 }
 
+void MainWindow::on_SendEdit_textChanged()
+{
+    if(ui->SendEdit->toPlainText().right(1)=="\n")
+    {
+        ui->SendEdit->setText(ui->SendEdit->toPlainText().left(ui->SendEdit->toPlainText().length()-1));
+
+        this->on_send_Button_clicked();
+
+        QTextCursor cursor=ui->SendEdit->textCursor();
+
+        cursor.setPosition(ui->SendEdit->toPlainText().length());
+        ui->SendEdit->setTextCursor(cursor);
+    }
+
+}
