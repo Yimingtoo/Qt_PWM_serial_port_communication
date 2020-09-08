@@ -1,4 +1,4 @@
-Data:2020/9/8  
+Date:2020/9/8  
 Update from: v1.3  
 Current version: v1.3.5  
 Qt version: 5.14.2  
