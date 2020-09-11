@@ -106,11 +106,26 @@ void MainWindow:: receive()
     //读取串口收到的数据
     QByteArray buffer = serial.readAll();
     qDebug()<<"buffer ="<<buffer;
-    char* byte=buffer.right(1).data();
-    if(byte[0]==0x60 && restart_flag==0)
+    if(ui->tebWidget->currentIndex()==2)
     {
-        this->on_downloadButton_clicked();
-        return;
+
+        char* byte=buffer.right(1).data();
+        if(byte[0]==0x60 && (download_flag==true || part_download_flag==true || repeat_flag==true))
+        {
+            this->download_data();
+            qDebug()<<download_flag<<part_download_flag<<repeat_flag;
+            return;
+        }
+        else if(byte[0]==0x60 && download_flag==false && part_download_flag==true && repeat_flag==false)
+        {
+            this->download_data();
+            return;
+        }
+        else if(byte[0]==0x60 && download_flag==false && part_download_flag==false && repeat_flag==true)
+        {
+            this->download_data();
+            return;
+        }
     }
 
     //判断是否需要16进制显示

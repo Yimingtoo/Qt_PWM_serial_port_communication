@@ -48,10 +48,24 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->saveas_action,&QAction::triggered,this,&MainWindow::saveas_action_res);
 
+    connect(ui->writereset_action,&QAction::triggered,this,&MainWindow::writereset_action_res);
+
+    connect(ui->debug_save_action,&QAction::triggered,this,&MainWindow::debug_save_action_rec);
+
+    connect(ui->debug_save_as_action,&QAction::triggered,this,&MainWindow::debug_save_as_action_rec);
+
+    connect(ui->open_action,&QAction::triggered,this,&MainWindow::open_action_rec);
+
+    connect(ui->open_from_action,&QAction::triggered,this,&MainWindow::open_from_action_rec);
+
     //-----------------------------------------结尾处理-----------------------------------------//
 
     setting->getSettingStatus();
     this->tabchange();
+
+    qDebug()<<download_flag<<part_download_flag;
+
+    //ui->repeat_download_Button->setVisible(false);
 
 }
 
@@ -156,10 +170,14 @@ void MainWindow::tabchange()
     if(ui->tebWidget->currentIndex()==2)
     {
         ui->codetableWidget->setVisible(true);
+        ui->part_down_Button->setVisible(true);
+        ui->repeat_download_Button->setVisible(true);
     }
     else
     {
         ui->codetableWidget->setVisible(false);
+        ui->part_down_Button->setVisible(false);
+        ui->repeat_download_Button->setVisible(false);
     }
 
     if(ui->tebWidget->currentIndex()==0)
@@ -368,6 +386,23 @@ void MainWindow:: timerEvent(QTimerEvent *e)
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

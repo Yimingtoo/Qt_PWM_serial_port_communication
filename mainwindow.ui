@@ -1372,6 +1372,11 @@
      <string>文件</string>
     </property>
     <addaction name="saveas_action"/>
+    <addaction name="writereset_action"/>
+    <addaction name="debug_save_action"/>
+    <addaction name="debug_save_as_action"/>
+    <addaction name="open_action"/>
+    <addaction name="open_from_action"/>
    </widget>
    <addaction name="menu_3"/>
    <addaction name="menu"/>
@@ -1583,6 +1588,30 @@
         <item>
          <widget class="QTableWidget" name="codetableWidget"/>
         </item>
+        <item>
+         <widget class="QPushButton" name="repeat_download_Button">
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+           </font>
+          </property>
+          <property name="text">
+           <string>重复下载</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="part_down_Button">
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+           </font>
+          </property>
+          <property name="text">
+           <string>局部下载</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>
@@ -1732,17 +1761,42 @@
   </action>
   <action name="pinsettingAction">
    <property name="text">
-    <string>设置</string>
+    <string>设置         (Settings)</string>
    </property>
   </action>
   <action name="resetsetAction">
    <property name="text">
-    <string>设置复位</string>
+    <string>设置复位(Set reset)</string>
    </property>
   </action>
   <action name="saveas_action">
    <property name="text">
-    <string>另存为...</string>
+    <string>另存为...                (Save H_file as...)</string>
+   </property>
+  </action>
+  <action name="writereset_action">
+   <property name="text">
+    <string>复位文件                          (Reset file)</string>
+   </property>
+  </action>
+  <action name="debug_save_action">
+   <property name="text">
+    <string>保存当前调试                           (Save)</string>
+   </property>
+  </action>
+  <action name="debug_save_as_action">
+   <property name="text">
+    <string>当前调试另存为...(Save debug as...)</string>
+   </property>
+  </action>
+  <action name="open_action">
+   <property name="text">
+    <string>打开                                         (Open)</string>
+   </property>
+  </action>
+  <action name="open_from_action">
+   <property name="text">
+    <string>从...打开                      (Open from...)</string>
    </property>
   </action>
  </widget>

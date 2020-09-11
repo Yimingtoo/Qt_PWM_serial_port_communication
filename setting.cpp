@@ -205,10 +205,20 @@ void Setting::on_okButton_clicked()
             }
         }
         QFile filesaves("PinSetting.dat");
-        bool res=filesaves.open(QIODevice::ReadWrite);
+        bool res=filesaves.open(QIODevice::ReadOnly);
         if(false==res)
         {
-            qDebug()<<"打开IARpath.txt失败\n";
+            qDebug()<<"打开PinSetting.dat失败\n";
+            return;
+        }
+        QString formerstr=filesaves.readAll();
+
+        filesaves.close();
+
+        res=filesaves.open(QIODevice::WriteOnly);
+        if(false==res)
+        {
+            qDebug()<<"打开PinSetting.dat失败\n";
             return;
         }
         for(int i=0;i<10;i++)
@@ -216,9 +226,23 @@ void Setting::on_okButton_clicked()
             title[i]=ui->comboBox_1->itemText(index[i]);
             filesaves.write(title[i].toUtf8()+"\n");
         }
+
         filesaves.close();
 
-        emit pinsetting(title);
+        res=filesaves.open(QIODevice::ReadOnly);
+        if(false==res)
+        {
+            qDebug()<<"打开PinSetting.dat失败\n";
+            return;
+        }
+        QString laterstr=filesaves.readAll();
+        filesaves.close();
+
+        if(laterstr!=formerstr)
+        {
+            emit pinsetting(title);
+        }
+
     }
 
     if(ui->tabWidget->currentIndex()==2)

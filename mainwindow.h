@@ -20,6 +20,8 @@
 #include <QGroupBox>
 #include <QDialog>
 #include <QFileDialog>
+#include <QMenu>
+#include <QAction>
 
 //Windows 相关头文件
 #include "windows.h"
@@ -124,6 +126,8 @@ public://-----------------------------------------------------------------------
 
     unsigned char find_pinID(QString pin);
 
+    void download_data();
+
     //------------------------------------------------->槽函数
 
     void dealThread(QByteArray buffer);
@@ -147,6 +151,20 @@ public://-----------------------------------------------------------------------
     void bandrate_ishighlighted(int index);
 
     void saveas_action_res();
+
+    void writereset_action_res();
+
+    void slotActionInsert();
+
+    void slotActionDelete();
+
+    void debug_save_action_rec();
+
+    void debug_save_as_action_rec();
+
+    void open_action_rec();
+
+    void open_from_action_rec();
 
 private slots://------------------------------------------------------------------------->私有槽函数
 
@@ -255,6 +273,19 @@ private slots://----------------------------------------------------------------
 
     void on_downloadButton_clicked();
 
+    void on_codetableWidget_itemChanged(QTableWidgetItem *item);
+
+    void on_codetableWidget_cellChanged(int row, int column);
+
+    void on_codetableWidget_cellPressed(int row, int column);
+
+    void on_codetableWidget_customContextMenuRequested(const QPoint &pos);
+
+
+    void on_repeat_download_Button_clicked();
+
+    void on_part_down_Button_clicked();
+
 private://------------------------------------------------------------------------->私有成员
 
     Ui::MainWindow *ui;
@@ -332,9 +363,21 @@ private://----------------------------------------------------------------------
     QStringList varlist;
     QStringList aimlist;
 
+    QString tabledata;
+
+    QMenu *table_widget_menu;
+
+    int pressed_row;
+
+    int min_row;
+    int max_row;
+
     int code_count;
     bool stop_flag;
-    bool restart_flag;
+    bool is_usr_change_flag;
+    bool download_flag;
+    bool part_download_flag;
+    bool repeat_flag;
 
     //------------------------------------------------->设置flag
 
@@ -376,6 +419,7 @@ protected://--------------------------------------------------------------------
 
     //热插拔检测
     bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+
 
 };
 #endif // MAINWINDOW_H

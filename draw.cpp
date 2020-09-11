@@ -217,6 +217,7 @@ void MainWindow::PID_setvisible(bool ok)
     ui->goalSpinBox->setVisible(ok);
     ui->goallabel->setVisible(ok);
     ui->setgoalButton->setVisible(ok);
+
 }
 
 //------------------------------------------------------------------------------------------------>私有槽函数

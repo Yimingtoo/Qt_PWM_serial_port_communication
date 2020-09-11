@@ -59,18 +59,306 @@ void MainWindow::steering_gear_control_init()
     wheel_steer_flag=0;
     code_count=false;
     stop_flag=false;
-    restart_flag=true;
+    download_flag=false;
+    part_download_flag=false;
+    repeat_flag=false;
+    is_usr_change_flag=false;
     //代码表格
 
-    ui->codetableWidget->setColumnCount(3);//设置列数
+    ui->codetableWidget->setColumnCount(2);//设置列数
 
-    ui->codetableWidget->setHorizontalHeaderLabels(QStringList()<<"引脚号"<<"增量"<<"目标量");//设置水平表头
+    ui->codetableWidget->setHorizontalHeaderLabels(QStringList()<<"引脚号"<<"目标量");//设置水平表头
     ui->codetableWidget->horizontalHeader()->setStretchLastSection(true);
     ui->codetableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     ui->codetableWidget->setColumnWidth(1,40);
     ui->codetableWidget->setColumnWidth(0,70);
     ui->codetableWidget->setColumnWidth(2,70);
 
+    //The view supports both dragging and dropping
+
+//    ui->codetableWidget->viewport()->installEventFilter(this);//注册
+//    ui->codetableWidget->setDragDropMode(QAbstractItemView::DragDrop);
+//    ui->codetableWidget->setDragEnabled(true);
+//    ui->codetableWidget->setAcceptDrops(true);
+      ui->codetableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+      ui->codetableWidget->setEditTriggers(QAbstractItemView::DoubleClicked);
+
+      //ui->codetableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);//选中一行
+
+
+      //右击菜单
+
+      ui->codetableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+
+      table_widget_menu = new QMenu(ui->codetableWidget);
+
+      QAction *action = new QAction("添加(Insert)", this);
+      connect(action,&QAction::triggered, this,&MainWindow::slotActionInsert);
+      table_widget_menu->addAction(action);
+
+      action = new QAction("删除(Delete)", this);
+      connect(action,&QAction::triggered, this,&MainWindow::slotActionDelete);
+      table_widget_menu->addAction(action);
+
+}
+
+void MainWindow::on_codetableWidget_customContextMenuRequested(const QPoint &pos)
+{
+    table_widget_menu->exec(QCursor::pos());
+}
+
+void MainWindow::slotActionInsert()
+{
+    is_usr_change_flag=true;
+    //qDebug()<<"insert";
+    pinlist.insert(pressed_row,"");
+    //qDebug()<<pinlist;
+    aimlist.insert(pressed_row,"");
+    //qDebug()<<aimlist;
+
+    ui->codetableWidget->setRowCount(pinlist.size());
+
+    for(int i=0;i<pinlist.size();i++)
+    {
+        qDebug()<<i;
+        int col=0;
+        ui->codetableWidget->setItem(i,col++,new QTableWidgetItem(pinlist[i]));
+        ui->codetableWidget->setItem(i,col++,new QTableWidgetItem(aimlist[i]));
+
+    }
+    ui->codetableWidget->scrollToBottom();  //让滚动条滚动到最底
+    is_usr_change_flag=false;
+}
+
+void MainWindow::slotActionDelete()
+{
+    //qDebug()<<"delete";
+    is_usr_change_flag=true;
+    pinlist.removeAt(pressed_row);
+    //qDebug()<<pinlist;
+    aimlist.removeAt(pressed_row);
+    //qDebug()<<aimlist;
+
+    ui->codetableWidget->setRowCount(pinlist.size());
+
+    for(int i=0;i<pinlist.size();i++)
+    {
+        qDebug()<<i;
+        int col=0;
+        ui->codetableWidget->setItem(i,col++,new QTableWidgetItem(pinlist[i]));
+        ui->codetableWidget->setItem(i,col++,new QTableWidgetItem(aimlist[i]));
+
+    }
+    ui->codetableWidget->scrollToBottom();  //让滚动条滚动到最底
+    is_usr_change_flag=false;
+}
+
+void MainWindow::debug_save_action_rec()
+{
+    QFile file("debug_save.dat");
+    file.open(QIODevice::WriteOnly);
+    for(int i=0;i<pinlist.size();i++)
+    {
+        if(pinlist[i]=="")
+        {
+            file.write("000\n");
+        }
+        else
+        {
+            file.write(pinlist[i].toUtf8()+" "+aimlist[i].toUtf8()+"\n");
+        }
+
+    }
+    file.close();
+}
+
+void MainWindow::debug_save_as_action_rec()
+{
+    QString file_name=QFileDialog::getSaveFileName(this,"调试另存为","../",".dat(*.dat);;All(*.*)");
+    QFile file(file_name);
+    file.open(QIODevice::WriteOnly);
+    for(int i=0;i<pinlist.size();i++)
+    {
+        if(pinlist[i]=="")
+        {
+            file.write("000\n");
+        }
+        else
+        {
+            file.write(pinlist[i].toUtf8()+" "+aimlist[i].toUtf8()+"\n");
+        }
+
+    }
+    file.close();
+
+}
+
+void MainWindow::open_action_rec()
+{
+    QFile file("debug_save.dat");
+    file.open(QIODevice::ReadOnly);
+    QString data_str=file.readAll();
+    file.close();
+
+    int count=0;
+    while(data_str!="")
+    {
+        if(data_str.left(3)=="000")
+        {
+            pinlist.insert(count,"");
+            aimlist.insert(count,"");
+            data_str.remove(0,4);
+        }
+        else
+        {
+            pinlist.insert(count,data_str.left(3));
+            //qDebug()<<pinlist[count];
+            data_str.remove(0,4);
+            QString temp="";
+            while(data_str.left(1)!="\n")
+            {
+                temp=temp+data_str.left(1);
+                data_str.remove(0,1);
+
+            }
+            aimlist.insert(count,temp);
+            data_str.remove(0,1);
+
+        }
+        count++;
+        //qDebug()<<data_str;
+    }
+    pinlist.replace(count-1,"");
+    aimlist.replace(count-1,QString("^系统保存调试^"));
+
+    ui->codetableWidget->setRowCount(pinlist.size());
+
+    for(int i=0;i<pinlist.size();i++)
+    {
+        qDebug()<<i;
+        int col=0;
+        ui->codetableWidget->setItem(i,col++,new QTableWidgetItem(pinlist[i]));
+        ui->codetableWidget->setItem(i,col++,new QTableWidgetItem(aimlist[i]));
+
+    }
+    ui->codetableWidget->scrollToBottom();  //让滚动条滚动到最底
+}
+
+void MainWindow::open_from_action_rec()
+{
+    QString file_name=QFileDialog::getOpenFileName(this,"调试路径","../","All(*.*)");
+    QFile file(file_name);
+    QFileInfo fi(file);
+    file.open(QIODevice::ReadOnly);
+    QString data_str=file.readAll();
+    file.close();
+
+    int count=0;
+    while(data_str!="")
+    {
+        if(data_str.left(3)=="000")
+        {
+            pinlist.insert(count,"");
+            aimlist.insert(count,"");
+            data_str.remove(0,4);
+        }
+        else
+        {
+            pinlist.insert(count,data_str.left(3));
+            //qDebug()<<pinlist[count];
+            data_str.remove(0,4);
+            QString temp="";
+            while(data_str.left(1)!="\n")
+            {
+                temp=temp+data_str.left(1);
+                data_str.remove(0,1);
+
+            }
+            aimlist.insert(count,temp);
+            data_str.remove(0,1);
+
+        }
+        count++;
+        //qDebug()<<data_str;
+    }
+    pinlist.replace(count-1,"");
+    aimlist.replace(count-1,QString("^%1^").arg(fi.fileName()));
+
+    ui->codetableWidget->setRowCount(pinlist.size());
+
+    for(int i=0;i<pinlist.size();i++)
+    {
+        qDebug()<<i;
+        int col=0;
+        ui->codetableWidget->setItem(i,col++,new QTableWidgetItem(pinlist[i]));
+        ui->codetableWidget->setItem(i,col++,new QTableWidgetItem(aimlist[i]));
+
+    }
+    ui->codetableWidget->scrollToBottom();  //让滚动条滚动到最底
+}
+
+void MainWindow::writereset_action_res()
+{
+    QString file_path=QFileDialog::getOpenFileName(this,"工程文件路径","../","prj(*.prj);;All(*.*)");
+    QString prjpath,tempstr;
+    for(int i=0;i<file_path.length();i++)
+    {
+        if(file_path[i]=='/')
+        {
+            prjpath=prjpath+tempstr+"/";
+            tempstr="";
+            continue;
+        }
+        tempstr=tempstr+file_path[i];
+    }
+    QFile file(prjpath+"Reset_value.h");
+
+    QFile file2("PinSetting.dat");
+    bool res=file2.open(QIODevice::ReadWrite);
+    if(false==res)
+    {
+        qDebug()<<"打开PinSetting.dat失败\n";
+        return;
+    }
+
+    QString titlename[10];
+
+    QString pin_str=file2.readAll();
+    for(int i=0;i<10;i++)
+    {
+        titlename[i]=pin_str.left(3);
+        pin_str=pin_str.remove(0,4);
+    }
+    //qDebug()<<titlename;
+
+    file2.close();
+
+    QFile file3("resetvalue.dat");
+    res=file3.open(QIODevice::ReadOnly);
+    if(false==res)
+    {
+        qDebug()<<"打开resetvalue.dat失败\n";
+        return;
+    }
+    QString resetvalue=file3.readAll();
+
+    file3.close();
+
+    file.open(QIODevice::WriteOnly);
+    file.write(QByteArray("#ifndef __RESET_VALUE_H\n"));
+    file.write(QByteArray("#define __RESET_VALUE_H\n\n"));
+    file.write(QByteArray("unsigned int reset_value[10] =\n"));
+    file.write(QByteArray("{\n"));
+    for(int i=0;i<10;i++)
+    {
+        file.write("    " + file_search(titlename[i],resetvalue).toUtf8());
+        if(i!=9)
+            file.write("," + QString("    //%1").arg(group[i]->title()).toUtf8() + "\n");
+    }
+
+    file.write(QByteArray("\n};\n\n"));
+    file.write(QByteArray("#endif\n"));
+    file.close();
 }
 
 void MainWindow::saveas_action_res()
@@ -96,37 +384,10 @@ void MainWindow::saveas_action_res()
     file.close();
 
     int listsize=pinlist.size();
-    int index[10]={0,0,0,0,0,0,0,0,0,0};
-    int cnt=0;
     file.open(QIODevice::Append);
 
     file.write(QByteArray("#ifndef __CTRL_H\n"));
     file.write(QByteArray("#define __CTRL_H\n"));
-//    for(int i=0;i<listsize;i++)
-//    {
-//        for(int j=0;j<10;j++)
-//        {
-//            if(group[j]->title()==pinlist[i])
-//            {
-//                index[cnt]=j;
-//                cnt++;
-//            }
-//        }
-//    }
-//    file.write(QString("#define SERVO_NUM_FOR_USER %1\n").arg(cnt).toUtf8());
-//    for(int i=0;i<10;i++)
-//    {
-//        for(int j=0;j<cnt;j++)
-//        {
-//            if(i==index[j])
-//            {
-//                file.write((QString("#define Part0 ") + group[i]->title()+"\n").toUtf8());
-//            }
-//        }
-//    }
-
-
-
     file.write(QString("unsigned int workdata[%1] =\n").arg(listsize).toUtf8());
         file.write(QByteArray("{\n"));
         for(int i=0;i<listsize-1;i++)
@@ -149,6 +410,68 @@ void MainWindow::saveas_action_res()
     file.write(QByteArray("#endif\n"));
 
     file.close();
+
+    {
+        QString prjpath,tempstr;
+        for(int i=0;i<file_path.length();i++)
+        {
+            if(file_path[i]=='/')
+            {
+                prjpath=prjpath+tempstr+"/";
+                tempstr="";
+                continue;
+            }
+            tempstr=tempstr+file_path[i];
+        }
+        QFile file(prjpath+"Reset_value.h");
+
+        QFile file2("PinSetting.dat");
+        bool res=file2.open(QIODevice::ReadWrite);
+        if(false==res)
+        {
+            qDebug()<<"打开PinSetting.dat失败\n";
+            return;
+        }
+
+        QString titlename[10];
+
+        QString pin_str=file2.readAll();
+        for(int i=0;i<10;i++)
+        {
+            titlename[i]=pin_str.left(3);
+            pin_str=pin_str.remove(0,4);
+        }
+        //qDebug()<<titlename;
+
+        file2.close();
+
+        QFile file3("resetvalue.dat");
+        res=file3.open(QIODevice::ReadOnly);
+        if(false==res)
+        {
+            qDebug()<<"打开resetvalue.dat失败\n";
+            return;
+        }
+        QString resetvalue=file3.readAll();
+
+        file3.close();
+
+        file.open(QIODevice::WriteOnly);
+        file.write(QByteArray("#ifndef __RESET_VALUE_H\n"));
+        file.write(QByteArray("#define __RESET_VALUE_H\n\n"));
+        file.write(QByteArray("unsigned int reset_value[10] =\n"));
+        file.write(QByteArray("{\n"));
+        for(int i=0;i<10;i++)
+        {
+            file.write("    " + file_search(titlename[i],resetvalue).toUtf8());
+            if(i!=9)
+                file.write("," + QString("    //%1").arg(group[i]->title()).toUtf8() + "\n");
+        }
+
+        file.write(QByteArray("\n};\n\n"));
+        file.write(QByteArray("#endif\n"));
+        file.close();
+    }
 }
 
 void MainWindow::pinsettingrec(QString *title)
@@ -157,7 +480,21 @@ void MainWindow::pinsettingrec(QString *title)
     {
         group[i]->setTitle(title[i]);
     }
-    write_resetvalue();
+    //write_resetvalue();
+
+    QString write="";
+    QFile file("resetvalue.dat");
+    bool res=file.open(QIODevice::WriteOnly);
+    if(false==res)
+    {
+        qDebug()<<"打开resetvalue.dat失败\n";
+        return;
+    }
+    for(int i=0;i<10;i++)
+        write=write+title[i]+" "+QString::number(300)+"\n";
+    file.write(write.toUtf8());
+    file.close();
+
 }
 
 void MainWindow::write_resetvalue()
@@ -264,40 +601,39 @@ unsigned char MainWindow::find_pinID(QString pin)
     return pin_id;
 }
 
-void MainWindow::on_downloadButton_clicked()
-{
-    bool ok;
 
-    char cmd=0x60;
-    if(restart_flag)
+
+void MainWindow::download_data()
+{
+    qDebug()<<code_count;
+    bool ok;
+    int i;
+
+    unsigned char temphigh,templow;
+    unsigned char pin_id;
+
+    if(code_count>=0)
     {
-        code_count=0;
-        restart_flag=0;
-        serial.write(&cmd,1);
-        ui->downloadButton->setEnabled(false);
-    }
-    else
-    {
-        int i;
         for(i=0;i<10;i++)
         {
             if(group[i]->title()==pinlist[code_count])
                 break;
         }
 
-        unsigned char pin_id=find_pinID(pinlist[code_count]);
+        pin_id=find_pinID(pinlist[code_count]);
         if(pin_id==0xff)
             return;
-        unsigned char temphigh=(unsigned char)(aimlist[code_count].toInt(&ok)>>8);
-        unsigned char templow=(unsigned char)(aimlist[code_count].toInt(&ok));
-
+        temphigh=(unsigned char)(aimlist[code_count].toInt(&ok)>>8);
+        templow=(unsigned char)(aimlist[code_count].toInt(&ok));
+    }
+    if(download_flag==true)
+    {
         if(code_count<pinlist.size()-1)
         {
             char datahigh=(char)(pin_id|temphigh);
             char datalow=(char)templow;
             serial.write(&datahigh,1);
             serial.write(&datalow,1);
-            qDebug()<<datahigh<<datalow;
         }
         else
         {
@@ -306,11 +642,155 @@ void MainWindow::on_downloadButton_clicked()
             serial.write(&datahigh,1);
             serial.write(&datalow,1);
             code_count=0;
-            restart_flag=1;
-            ui->downloadButton->setEnabled(true);
-             qDebug()<<datahigh<<datalow;
+            download_flag=false;
+            ui->downloadButton->setText("下载");
+
         }
-        code_count++;
+    }
+    else if(part_download_flag==true)
+    {
+        if(code_count<=max_row && code_count<pinlist.size()-1)
+        {
+            char datahigh=(char)(pin_id|temphigh);
+            char datalow=(char)templow;
+            serial.write(&datahigh,1);
+            serial.write(&datalow,1);
+        }
+        else
+        {
+            char datahigh=(char)0x73;
+            char datalow=(char)0x74;
+            serial.write(&datahigh,1);
+            serial.write(&datalow,1);
+            code_count=0;
+            part_download_flag=false;
+            ui->part_down_Button->setText("局部下载");
+        }
+    }
+    else if(repeat_flag==true)
+    {
+        qDebug()<<code_count;
+        if(code_count==min_row-1)
+        {
+            char cmd=0x60;
+            serial.write(&cmd,1);
+        }
+        if(code_count<=max_row && code_count<pinlist.size()-1)
+        {
+            char datahigh=(char)(pin_id|temphigh);
+            char datalow=(char)templow;
+            serial.write(&datahigh,1);
+            serial.write(&datalow,1);
+        }
+        else
+        {
+            char datahigh=(char)0x73;
+            char datalow=(char)0x74;
+            serial.write(&datahigh,1);
+            serial.write(&datalow,1);
+            code_count=min_row-2;
+            //part_download_flag=false;
+            ui->part_down_Button->setText("局部下载");
+            //qDebug()<<datahigh<<datalow;
+        }
+    }
+
+    qDebug()<<"code_count:"<<code_count;
+    code_count++;
+}
+
+
+void MainWindow::on_downloadButton_clicked()
+{
+
+    if(ui->open_Button->text()=="打开串口")
+    {
+        QMessageBox::warning(NULL,"警告","请打开串口");
+        return;
+    }
+    char cmd=0x60;
+    if(download_flag==false && part_download_flag==false && repeat_flag==false)
+    {
+        code_count=0;
+        download_flag=true;
+        serial.write(&cmd,1);
+        ui->downloadButton->setText("停止");
+    }
+    else if(download_flag==true)
+    {
+        code_count=0;
+        download_flag=false;
+        ui->downloadButton->setText("下载");
+    }
+
+}
+
+void MainWindow::on_part_down_Button_clicked()
+{
+    if(ui->open_Button->text()=="打开串口")
+    {
+        QMessageBox::warning(NULL,"警告","请打开串口");
+        return;
+    }
+    if(download_flag==false && part_download_flag==false && repeat_flag==false)
+    {
+        part_download_flag=true;
+
+        QList<QTableWidgetItem*>items=ui->codetableWidget->selectedItems();
+        int temp_count=items.count();
+        min_row=ui->codetableWidget->row(items.at(0));
+        max_row=ui->codetableWidget->row(items.at(temp_count-1));
+        if(min_row==-1 || max_row==-1)
+        {
+            return;
+        }
+
+        qDebug()<<min_row;
+        code_count=min_row;
+        char cmd=0x60;
+        serial.write(&cmd,1);
+        ui->part_down_Button->setText("停止");
+    }
+    else if(part_download_flag==true)
+    {
+        code_count=0;
+        part_download_flag=false;
+        ui->part_down_Button->setText("局部下载");
+    }
+
+}
+
+void MainWindow::on_repeat_download_Button_clicked()
+{
+    if(ui->open_Button->text()=="打开串口")
+    {
+        QMessageBox::warning(NULL,"警告","请打开串口");
+        return;
+    }
+    if(download_flag==false && part_download_flag==false && repeat_flag==false)
+    {
+        repeat_flag=true;
+
+        QList<QTableWidgetItem*>items=ui->codetableWidget->selectedItems();
+        int temp_count=items.count();
+        min_row=ui->codetableWidget->row(items.at(0));
+        max_row=ui->codetableWidget->row(items.at(temp_count-1));
+        if(min_row==-1 || max_row==-1)
+        {
+            return;
+        }
+
+        qDebug()<<min_row;
+        code_count=min_row;
+        char cmd=0x60;
+        serial.write(&cmd,1);
+        ui->repeat_download_Button->setText("停止");
+    }
+    else if(repeat_flag==true)
+    {
+        code_count=0;
+        repeat_flag=false;
+        ui->repeat_download_Button->setText("重复下载");
     }
 
 }
@@ -326,14 +806,104 @@ void MainWindow::on_clearButton_clicked()
 
 void MainWindow::on_codetableWidget_cellDoubleClicked(int row, int column)
 {
-    ui->codetableWidget->removeRow(row);
-    pinlist.removeAt(row);
-    varlist.removeAt(row);
-    aimlist.removeAt(row);
+    button= qApp->mouseButtons();
+    if(button==Qt::RightButton)
+    {
+        ui->codetableWidget->removeRow(row);
+        pinlist.removeAt(row);
+        varlist.removeAt(row);
+        aimlist.removeAt(row);
+    }
+}
+
+void MainWindow::on_codetableWidget_itemChanged(QTableWidgetItem *item)
+{
+
+}
+
+void MainWindow::on_codetableWidget_cellChanged(int row, int column)
+{
+    bool ok;
+    if(is_usr_change_flag)
+    {
+        return;
+    }
+    else
+    {
+        if(column==0)
+        {
+            QString getdata=ui->codetableWidget->item(row,column)->data(Qt::DisplayRole).toString();
+            if( getdata=="PA0"||
+                getdata=="PA1"||
+                getdata=="PA2"||
+                getdata=="PA3"||
+                getdata=="PA4"||
+                getdata=="PA5"||
+                getdata=="PA6"||
+                getdata=="PA7"||
+
+                getdata=="PB0"||
+                getdata=="PB1"||
+                getdata=="PB2"||
+                getdata=="PB3"||
+                getdata=="PB4"||
+                getdata=="PB5"||
+                getdata=="PB6"||
+                getdata=="PB7"||
+
+                getdata=="PC0"||
+                getdata=="PC1"||
+                getdata=="PC2"||
+                getdata=="PC3"||
+                getdata=="PC4"||
+                getdata=="PC5"||
+                getdata=="PC6"||
+                getdata=="PC7"||
+
+                getdata=="PD0"||
+                getdata=="PD1"||
+                getdata=="PD2"||
+                getdata=="PD3"||
+                getdata=="PD4"||
+                getdata=="PD5"||
+                getdata=="PD6"||
+                getdata=="PD7"||
+                getdata=="")
+            {
+                pinlist.replace(row,getdata);
+            }
+            else
+            {
+                ui->codetableWidget->setItem(row,column,new QTableWidgetItem(tabledata));
+            }
+
+        }
+        if(column==1)
+        {
+            QString getdata=ui->codetableWidget->item(row,column)->data(Qt::DisplayRole).toString();
+            if((getdata.toInt(&ok)<=600 && getdata.toInt(&ok)>=0) || getdata=="")
+            {
+                aimlist.replace(row,getdata);
+            }
+            else
+            {
+                ui->codetableWidget->setItem(row,column,new QTableWidgetItem(tabledata));
+            }
+        }
+    }
+
+}
+
+void MainWindow::on_codetableWidget_cellPressed(int row, int column)
+{
+    tabledata = ui->codetableWidget->item(row,column)->data(Qt::DisplayRole).toString();
+    pressed_row=row;
+    qDebug()<<pressed_row<<tabledata;
 }
 
 void MainWindow::on_generateButton_clicked()
 {
+    is_usr_change_flag=true;
     int count=0;
     if(ui->velocityBox->value())
     {
@@ -382,7 +952,7 @@ void MainWindow::on_generateButton_clicked()
 
         int col=0;
         ui->codetableWidget->setItem(i,col++,new QTableWidgetItem(pinlist[i]));
-        ui->codetableWidget->setItem(i,col++,new QTableWidgetItem(varlist[i]));
+        //ui->codetableWidget->setItem(i,col++,new QTableWidgetItem(varlist[i]));
         ui->codetableWidget->setItem(i,col++,new QTableWidgetItem(aimlist[i]));
 
     }
@@ -395,7 +965,7 @@ void MainWindow::on_generateButton_clicked()
      {
          varlabel[i]->setNum(0);
      }
-
+    is_usr_change_flag=false;
 }
 
 void MainWindow::on_resetButton_4_clicked()
