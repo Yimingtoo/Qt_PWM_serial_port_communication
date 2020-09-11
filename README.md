@@ -1,6 +1,6 @@
-Date:2020/9/8  
-Update from: v1.3  
-Current version: v1.3.5  
+Date:2020/9/11  
+Update from: v1.3.5  
+Current version: v1.4.0  
 Qt version: 5.14.2  
 Qwt version: 6.1.4  
 
@@ -104,7 +104,7 @@ Qwt version: 6.1.4
 注意：  
 >单片机采集数据的周期（即计算机接收每组数据的周期）要大于30ms  
 
-上位机程序源码在https://github.com/chenyongzhi5032/Qt_PWM_serial_port_communication/tree/update5  
+上位机程序源码在https://github.com/chenyongzhi5032/Qt_PWM_serial_port_communication/edit/update6 
 
 Email:1240831428@qq.com  
 
