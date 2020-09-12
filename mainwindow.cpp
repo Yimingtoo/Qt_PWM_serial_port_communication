@@ -62,11 +62,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     setting->getSettingStatus();
     this->tabchange();
-
-    qDebug()<<download_flag<<part_download_flag;
-
-    //ui->repeat_download_Button->setVisible(false);
-
 }
 
 MainWindow::~MainWindow()
@@ -114,28 +109,6 @@ void MainWindow::wheel_open_rec(bool isok)
     }
 }
 
-void MainWindow::group_wheel(int group,QGroupBox *box,QWheelEvent *event)
-{
-    int left=box->geometry().x();
-    int right=left+box->geometry().width();
-    int up=box->geometry().y();
-    int down=up+box->geometry().height();
-    int posx=ui->qwtPlot->mapFrom(this,this->mapFromGlobal(QCursor::pos())).x();
-    int posy=ui->qwtPlot->mapFrom(this,this->mapFromGlobal(QCursor::pos())).y();
-
-    if(left<posx && posx<right && up<posy && posy<down)
-    {
-        if(event->delta()>0)
-        {
-            group_find_value=TIME_GROUP(group,FORWARD);
-        }
-        else
-        {
-            group_find_value=TIME_GROUP(group,BACK);
-        }
-        group_find();
-    }
-}
 
 //------------------------------------------------------------------------------------------------>槽函数
 
@@ -350,13 +323,19 @@ void MainWindow:: wheelEvent(QWheelEvent *event)
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-//    if(event->text()=="\r")
-//    {
-//        if(ui->tebWidget->currentIndex()==1)
-//        {
-//            this->on_send_Button_clicked();
-//        }
-//    }
+    if((event->modifiers() == Qt::ControlModifier) && (event->key() == Qt::Key_C))
+    {
+        copy_table();
+        copy_flag=true;
+    }
+    if((event->modifiers() == Qt::ControlModifier) && (event->key() == Qt::Key_V))
+    {
+        if(copy_flag)
+        {
+            paste_table();
+        }
+    }
+
 }
 
 void MainWindow:: timerEvent(QTimerEvent *e)

@@ -102,15 +102,15 @@ public://-----------------------------------------------------------------------
 
     //------------------------------------------------->舵机控制
 
-    void receive();
-
     void steering_gear_control_init();
-
-    void write_resetvalue();
 
     void read_resetvalue();
 
+    void write_resetvalue();
+
     QString file_search(QString aim,QString search);
+
+    unsigned char find_pinID(QString pin);
 
     void group_find();
 
@@ -124,9 +124,15 @@ public://-----------------------------------------------------------------------
 
     void usart_send(int i,char cmd);
 
-    unsigned char find_pinID(QString pin);
-
     void download_data();
+
+    void write_debug(QString path);
+
+    void read_debug(QString path);
+
+    void copy_table();
+
+    void paste_table();
 
     //------------------------------------------------->槽函数
 
@@ -136,9 +142,9 @@ public://-----------------------------------------------------------------------
 
     void tabchange();
 
-    void dealfloatThread(QPointF point);
+    void receive();
 
-    void pinsettingrec(QString *title);
+    void dealfloatThread(QPointF point);
 
     void wheel_open_rec(bool isok);
 
@@ -150,6 +156,10 @@ public://-----------------------------------------------------------------------
 
     void bandrate_ishighlighted(int index);
 
+    //舵机调试槽函数
+
+    void pinsettingrec(QString *title);
+
     void saveas_action_res();
 
     void writereset_action_res();
@@ -157,6 +167,10 @@ public://-----------------------------------------------------------------------
     void slotActionInsert();
 
     void slotActionDelete();
+
+    void slotActionCopy();
+
+    void slotActionPaste();
 
     void debug_save_action_rec();
 
@@ -180,6 +194,10 @@ private slots://----------------------------------------------------------------
 
     void on_sendPIDButton_clicked();
 
+    void on_setgoalButton_clicked();
+
+    void on_SendEdit_textChanged();
+
     //------------------------------------------------->串口
 
     void on_clear_r_Button_clicked();
@@ -188,11 +206,30 @@ private slots://----------------------------------------------------------------
 
     void on_open_Button_clicked();
 
+    void on_ReceiveEdit_textChanged();
+
     //------------------------------------------------->舵机控制
 
     void on_resetButton_4_clicked();
 
-    void on_ReceiveEdit_textChanged();
+    void on_clearButton_clicked();
+
+    void on_generateButton_clicked();
+
+    void on_downloadButton_clicked();
+
+    void on_part_down_Button_clicked();
+
+    void on_repeat_download_Button_clicked();
+
+    void on_codetableWidget_cellChanged(int row, int column);
+
+    void on_codetableWidget_cellPressed(int row, int column);
+
+    void on_codetableWidget_cellDoubleClicked(int row, int column);
+
+    void on_codetableWidget_customContextMenuRequested(const QPoint &pos);
+
 
     void on_forwardButton1_clicked();
     void on_forwardButton1_pressed();
@@ -260,31 +297,8 @@ private slots://----------------------------------------------------------------
     void on_reverseButton10_clicked();
     void on_reverseButton10_pressed();
 
-    void on_setgoalButton_clicked();
-
-    void on_SendEdit_textChanged();
 
 
-    void on_generateButton_clicked();
-
-    void on_codetableWidget_cellDoubleClicked(int row, int column);
-
-    void on_clearButton_clicked();
-
-    void on_downloadButton_clicked();
-
-    void on_codetableWidget_itemChanged(QTableWidgetItem *item);
-
-    void on_codetableWidget_cellChanged(int row, int column);
-
-    void on_codetableWidget_cellPressed(int row, int column);
-
-    void on_codetableWidget_customContextMenuRequested(const QPoint &pos);
-
-
-    void on_repeat_download_Button_clicked();
-
-    void on_part_down_Button_clicked();
 
 private://------------------------------------------------------------------------->私有成员
 
@@ -363,6 +377,8 @@ private://----------------------------------------------------------------------
     QStringList varlist;
     QStringList aimlist;
 
+    QStringList copypin,copyaim;
+
     QString tabledata;
 
     QMenu *table_widget_menu;
@@ -378,6 +394,7 @@ private://----------------------------------------------------------------------
     bool download_flag;
     bool part_download_flag;
     bool repeat_flag;
+    bool copy_flag;
 
     //------------------------------------------------->设置flag
 
